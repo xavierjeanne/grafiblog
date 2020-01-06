@@ -3,12 +3,14 @@
 namespace App\Blog;
 
 use Framework\Router;
+use Framework\Renderer;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class BlogModule
 {
 
+    private $renderer;
     /**
      * __construct
      *
@@ -16,19 +18,23 @@ class BlogModule
      *
      * @return void
      */
-    public function __construct(Router $router)
+    public function __construct(Router $router, Renderer $renderer)
     {
+        $this->renderer = $renderer;
+        $this->renderer->addPath('blog', __DIR__ . '/views');
         $router->get('/blog', [$this, 'index'], 'blog.index');
-        $router->get('/blog/{slug:[a-z\-]+}', [$this, 'show'], 'blog.show');
+        $router->get('/blog/{slug:[a-z\-0-9]+}', [$this, 'show'], 'blog.show');
     }
 
     public function index(Request $request): string
     {
-        return '<h1>Bienvenue sur le blog</h1>';
+        return $this->renderer->render('@blog/index');
     }
 
     public function show(Request $request): string
     {
-        return '<h1>Bienvenue sur l\'article ' . $request->getAttribute('slug') . '</h1>';
+        return $this->renderer->render('@blog/show', [
+            'slug' => $request->getAttribute('slug')
+        ]);
     }
 }
