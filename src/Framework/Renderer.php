@@ -13,14 +13,14 @@ class Renderer
 
     /**
      * default namespace
-     * 
+     *
      * @const string
      */
     const DEFAULT_NAMESPACE = '__MAIN';
 
     /**
-     * global variable 
-     * 
+     * global variable
+     *
      * @var array
      */
     private $globals = [];
@@ -68,7 +68,7 @@ class Renderer
     }
     /**
      * add global variable to all views
-     * 
+     *
      *
      * @param string $key
      * @param mixed $value
