@@ -2,14 +2,17 @@
 
 namespace Framework\Renderer;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
 class TwigRenderer implements RendererInterface
 {
     private $twig;
     private $loader;
-    public function __construct(string $path)
+    public function __construct(FilesystemLoader $loader, Environment $twig)
     {
-        $this->loader = new \Twig\Loader\FilesystemLoader($path);
-        $this->twig = new \Twig\Environment($this->loader, []);
+        $this->loader = $loader;
+        $this->twig = $twig;
     }
     /**
      * add path to load view
