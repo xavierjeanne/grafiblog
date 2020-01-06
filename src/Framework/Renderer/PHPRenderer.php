@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework;
+namespace Framework\Renderer;
 
-class Renderer
+class PHPRenderer implements RendererInterface
 {
     /**
      * path array
@@ -25,6 +25,14 @@ class Renderer
      */
     private $globals = [];
 
+
+
+    public function __construct(?string $defaultPath = null)
+    {
+        if (!is_null($defaultPath)) {
+            $this->addPath($defaultPath);
+        }
+    }
     /**
      * add path to load view
      *
@@ -78,6 +86,7 @@ class Renderer
     {
         $this->globals[$key] = $value;
     }
+
     /**
      * check if view has namespace
      *
