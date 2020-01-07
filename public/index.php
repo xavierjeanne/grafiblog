@@ -19,8 +19,8 @@ $builder->addDefinitions(dirname(__DIR__) . '/config.php');
 $container = $builder->build();
 
 $app = new \Framework\App($container, $modules);
-if (php_sapi_name() !== "cli") {
+if (php_sapi_name() === "cli") {
     throw new Exception();
-    $response = $app->run(\GuzzleHttp\Psr7\ServerRequest::fromGlobals());
-    \Http\Response\send($response);
 }
+$response = $app->run(\GuzzleHttp\Psr7\ServerRequest::fromGlobals());
+\Http\Response\send($response);

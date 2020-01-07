@@ -26,9 +26,9 @@ class PostSeeder extends AbstractSeed
                 'created_at' => date('Y-m-d H:i:s', $date),
                 'updated_at' => date('Y-m-d H:i:s', $date),
             ];
-            $this->table('posts')
-                ->insert($data)
-                ->save();
         }
+        $this->table('posts')
+            ->insert($data)
+            ->save();
     }
 }
