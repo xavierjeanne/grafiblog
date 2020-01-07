@@ -15,7 +15,10 @@ return [
     'database.name' => 'grafiblog',
     'views.path' => dirname(__DIR__) . '/views',
     'twig.extensions' => [
-        \DI\get(\Framework\Router\RouterTwigExtension::class)
+        \DI\get(\Framework\Router\RouterTwigExtension::class),
+        \DI\get(\Framework\Twig\PagerfantaExtension::class),
+        \DI\get(\Framework\Twig\TextExtension::class),
+        \DI\get(\Framework\Twig\TimeExtension::class)
     ],
     Router::class => \DI\create(),
     RendererInterface::class => \DI\factory(TwigRendererFactory::class),

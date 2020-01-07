@@ -2,7 +2,10 @@
 
 namespace App\Blog\Table;
 
-use stdClass;
+use App\Blog\Entity\Post as EntityPost;
+use Pagerfanta\Pagerfanta;
+use Framework\Database\PaginatedQuery;
+use App\Blog\Entity\Post;
 
 class PostTable
 {
@@ -20,11 +23,13 @@ class PostTable
     /**
      * Pagination of article
      *
-     * @return \stdClass[]
+     * @var int perPage
+     * @return Pagerfanta
      */
-    public function findPaginated()
+    public function findPaginated(int $perPage, int $currentPage): Pagerfanta
     {
-        return $this->pdo->query('SELECT * FROM posts ORDER BY created_at DESC LIMIT 10')->fetchAll();
+        $query = new PaginatedQuery($this->pdo, 'SELECT * FROM posts', 'SELECT COUNT(id) FROM posts', Post::class);
+        return (new Pagerfanta($query))->setMaxPerPage($perPage)->setCurrentPage($currentPage);
     }
 
     /**
@@ -32,12 +37,13 @@ class PostTable
      *
      * @param  int $id
      *
-     * @return \stdClass
+     * @return Post
      */
-    public function find(int $id): \stdClass
+    public function find(int $id): Post
     {
         $query = $this->pdo->prepare('SELECT * FROM posts WHERE id = ?');
         $query->execute([$id]);
+        $query->setFetchMode(\PDO::FETCH_CLASS, Post::class);
         return $query->fetch();
     }
 }
