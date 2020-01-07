@@ -68,7 +68,9 @@ class PostTable
         $values = array_map(function ($field) {
             return ':' . $field;
         }, $fields);
-        $statement = $this->pdo->prepare("INSERT INTO posts (" . join(',', $fields) . ") VALUES (" . join(',', $values) . ")");
+        $statement = $this->pdo->prepare(
+            "INSERT INTO posts (" . join(',', $fields) . ") VALUES (" . join(',', $values) . ")"
+        );
         return $statement->execute($params);
     }
     public function delete(int $id): bool
