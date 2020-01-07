@@ -1,10 +1,10 @@
 <?php
 
-use App\Blog\BlogModule;
 
 // require autoload composer
 require dirname(__DIR__) . '/vendor/autoload.php';
 $modules = [
+    \App\Admin\AdminModule::class,
     \App\Blog\BlogModule::class
 ];
 $builder = new \DI\ContainerBuilder();
