@@ -4,7 +4,14 @@ namespace config;
 
 use PDO;
 use Framework\Router;
+use Framework\Session\PHPSession;
+use Framework\Twig\TextExtension;
+use Framework\Twig\TimeExtension;
+use Framework\Twig\FlashExtension;
+use Framework\Session\SessionInterface;
+use Framework\Twig\PagerfantaExtension;
 use Framework\Renderer\RendererInterface;
+use Framework\Router\RouterTwigExtension;
 use Framework\Renderer\TwigRendererFactory;
 
 
@@ -15,11 +22,13 @@ return [
     'database.name' => 'grafiblog',
     'views.path' => dirname(__DIR__) . '/views',
     'twig.extensions' => [
-        \DI\get(\Framework\Router\RouterTwigExtension::class),
-        \DI\get(\Framework\Twig\PagerfantaExtension::class),
-        \DI\get(\Framework\Twig\TextExtension::class),
-        \DI\get(\Framework\Twig\TimeExtension::class)
+        \DI\get(RouterTwigExtension::class),
+        \DI\get(PagerfantaExtension::class),
+        \DI\get(TextExtension::class),
+        \DI\get(TimeExtension::class),
+        \DI\get(FlashExtension::class)
     ],
+    SessionInterface::class => \DI\create(PHPSession::class),
     Router::class => \DI\create(),
     RendererInterface::class => \DI\factory(TwigRendererFactory::class),
     \PDO::class => function (\Psr\Container\ContainerInterface $c) {
