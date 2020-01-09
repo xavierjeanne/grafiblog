@@ -60,7 +60,7 @@ class AdminBlogAction
         $item = $this->postTable->find($request->getAttribute('id'));
         if ($request->getMethod() === 'POST') {
             $params = $this->getParams($request);
-            $params['updated_at'] = date('Y-m-d H:i:s');
+
             $validator = $this->getValidator($request);
             if ($validator->isValid()) {
                 $this->postTable->update($item->id, $params);
@@ -82,10 +82,7 @@ class AdminBlogAction
     {
         if ($request->getMethod() === 'POST') {
             $params = $this->getParams($request);
-            $params = array_merge($params, [
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
+
             $validator = $this->getValidator($request);
             if ($validator->isValid()) {
                 $this->postTable->insert($params);
@@ -104,9 +101,13 @@ class AdminBlogAction
     }
     private function getParams(Request $request)
     {
-        return array_filter($request->getParsedBody(), function ($key) {
-            return in_array($key, ['name', 'slug', 'content']);
+        $params = array_filter($request->getParsedBody(), function ($key) {
+            return in_array($key, ['name', 'slug', 'content', 'created_at']);
         }, ARRAY_FILTER_USE_KEY);
+        $params = array_merge($params, [
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        return $params;
     }
     private function getValidator(Request $request)
     {

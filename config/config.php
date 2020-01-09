@@ -5,6 +5,7 @@ namespace config;
 use PDO;
 use Framework\Router;
 use Framework\Session\PHPSession;
+use Framework\Twig\FormExtension;
 use Framework\Twig\TextExtension;
 use Framework\Twig\TimeExtension;
 use Framework\Twig\FlashExtension;
@@ -26,7 +27,8 @@ return [
         \DI\get(PagerfantaExtension::class),
         \DI\get(TextExtension::class),
         \DI\get(TimeExtension::class),
-        \DI\get(FlashExtension::class)
+        \DI\get(FlashExtension::class),
+        \DI\get(FormExtension::class)
     ],
     SessionInterface::class => \DI\create(PHPSession::class),
     Router::class => \DI\create(),
