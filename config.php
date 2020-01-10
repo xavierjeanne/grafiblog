@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'blog.prefix' => '/news',
+    'blog.prefix' => '/posts',
 ];

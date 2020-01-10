@@ -14,7 +14,8 @@ class ValidationError
         'maxLength' => 'Le champ %s doit contenir moins de %d caractères',
         'betweenLength' => 'Le champ %s doit être compris entre %d et %d caractères',
         'datetime' => 'Le champ %s doit être une date valide(%s)',
-        'empty' => 'Le champ %s n\'est pas un slug valide'
+        'empty' => 'Le champ %s n\'est pas un slug valide',
+        'exists' => 'Le champ %s n\'existe pas dans la table %s'
     ];
 
     public function __construct(string $key, string $rule, array $attributes = [])

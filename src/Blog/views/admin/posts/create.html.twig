@@ -1,0 +1,11 @@
+{% extends '@admin/layout.html.twig' %}
+{% block title "ajouter un  article" %}
+
+
+{% block body %}
+	<h1>Ajouter un article</h1>
+	<form action="{{path(routePrefix ~'.create',{id:item.id})}}" method="post">
+		{% include viewPath ~'/form.html.twig' %}
+		<button class="btn btn-primary" type="submit">Editer</button>
+	</form>
+{% endblock %}

@@ -45,6 +45,8 @@ class FormExtension extends AbstractExtension
         }
         if ($type === 'textarea') {
             $input = $this->textarea($value, $attributes);
+        } elseif (array_key_exists('options', $options)) {
+            $input = $this->select($value, $options['options'], $attributes);
         } else {
             $input = $this->input($value, $attributes);
         }
@@ -90,11 +92,26 @@ class FormExtension extends AbstractExtension
         return "<textarea " . $this->getHmtlFromArray($attributes) . " rows=\"10\">{$value}</textarea>";
     }
 
+    private function select(?string $value, array $options, array $attributes)
+    {
+        $htmlOptions = array_reduce(array_keys($options), function (string $html, string $key) use ($options, $value) {
+            $params = ['value' => $key, 'selected' => $key === $value];
+            return $html . '<option ' . $this->getHmtlFromArray($params) . '>' . $options[$key] . '</option>';
+        }, "");
+        return "<select " . $this->getHmtlFromArray($attributes) . ">$htmlOptions</select>";
+    }
     private function getHmtlFromArray(array $attributes)
     {
-        return implode(' ', array_map(function ($key, $value) {
-            return "$key=\"$value\"";
-        }, array_keys($attributes), $attributes));
+        $htmlParts = [];
+        foreach ($attributes as $key => $value) {
+            if ($value === true) {
+                $htmlParts[] = (string) $key;
+            } elseif ($value !== false) {
+                $htmlParts[] =  "$key=\"$value\"";
+                ;
+            }
+        }
+        return implode(' ', $htmlParts);
     }
     private function convertValue($value): string
     {

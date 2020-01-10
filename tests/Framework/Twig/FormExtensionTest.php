@@ -34,6 +34,17 @@ class FormExtensionTest extends TestCase
         $html = $this->formExtension->field([], 'name', 'demo', 'Titre', ['class' => 'demo']);
         $this->assertSimilar("<div class=\"form-group\"><label for=\"name\">Titre</label><input type=\"text\" class=\"form-control demo\" name=\"name\" id=\"name\" value=\"demo\"/></div>", $html);
     }
+    public function testselect()
+    {
+        $html = $this->formExtension->field(
+            [],
+            'name',
+            2,
+            'Titre',
+            ['options' => [1 => 'Demo', 2 => 'Demo 2']]
+        );
+        $this->assertSimilar("<div class=\"form-group\"><label for=\"name\">Titre</label><select class=\"form-control\" name=\"name\" id=\"name\"><option value=\"1\">Demo</option><option value=\"2\" selected>Demo 2</option></select></div>", $html);
+    }
     private function trim(string $string)
     {
         $lines = explode(PHP_EOL, $string);

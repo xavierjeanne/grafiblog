@@ -2,6 +2,7 @@
 
 namespace App\Framework;
 
+use Framework\Database\Table;
 use Framework\Validator\ValidationError;
 
 class Validator
@@ -139,5 +140,16 @@ class Validator
             return $this->params[$key];
         }
         return null;
+    }
+
+    public function exists(string $key, string $table, \PDO $pdo): self
+    {
+        $value = $this->getValue($key);
+        $statement = $pdo->prepare("SELECT * FROM $table WHERE id=?");
+        $statement->execute([$value]);
+        if ($statement->fetchColumn() === false) {
+            $this->addError($key, 'exists', [$table]);
+        }
+        return $this;
     }
 }
