@@ -15,7 +15,8 @@ class ValidationError
         'betweenLength' => 'Le champ %s doit être compris entre %d et %d caractères',
         'datetime' => 'Le champ %s doit être une date valide(%s)',
         'empty' => 'Le champ %s n\'est pas un slug valide',
-        'exists' => 'Le champ %s n\'existe pas dans la table %s'
+        'exists' => 'Le champ %s n\'existe pas dans la table %s',
+        'unique' => 'Le champ %s doit être unique'
     ];
 
     public function __construct(string $key, string $rule, array $attributes = [])

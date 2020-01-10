@@ -16,7 +16,7 @@ class CrudAction
 {
     protected $viewPath;
     private $renderer;
-    private $table;
+    protected $table;
     private $router;
     private $flash;
     protected $routePrefix;
