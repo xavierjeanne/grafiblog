@@ -54,4 +54,9 @@ class TwigRenderer implements RendererInterface
     {
         $this->twig->addGlobal($key, $value);
     }
+
+    public function getTwig(): Environment
+    {
+        return $this->twig;
+    }
 }
