@@ -8,9 +8,9 @@ class Post
     public $name;
     public $content;
     public $slug;
-    public $created_at;
-    public $updated_at;
-    public $category_name;
+    public $createdAt;
+    public $updatedAt;
+    public $categoryName;
 
     public function __construct()
     {
@@ -19,6 +19,18 @@ class Post
         }
         if ($this->updated_at) {
             $this->updated_at = new \Datetime($this->updated_at);
+        }
+    }
+    public function setCreatedAt($datetime)
+    {
+        if (is_string($datetime)) {
+            $this->createdAt = new \Datetime($datetime);
+        }
+    }
+    public function setUpdatedAt($datetime)
+    {
+        if (is_string($datetime)) {
+            $this->updatedAt = new \Datetime($datetime);
         }
     }
 }
