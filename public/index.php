@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use Framework\Middleware\MethodMiddleware;
 use Framework\Middleware\RouterMiddleware;
+use Framework\Middleware\CsrfMiddleware;
 use Framework\Middleware\NotFoundMiddleware;
 use Framework\Middleware\DispatcherMiddleware;
 use Framework\Middleware\TrailingSlashMiddleware;
@@ -24,6 +25,7 @@ $app = (new \Framework\App(dirname(__DIR__) . '/config/config.php'))
     ->pipe(Whoops::class)
     ->pipe(TrailingSlashMiddleware::class)
     ->pipe(MethodMiddleware::class)
+    ->pipe(CsrfMiddleware::class)
     ->pipe(RouterMiddleware::class)
     ->pipe(DispatcherMiddleware::class)
     ->pipe(NotFoundMiddleware::class);

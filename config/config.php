@@ -5,12 +5,14 @@ namespace config;
 use PDO;
 use Framework\Router;
 use Framework\Session\PHPSession;
+use Framework\Twig\CsrfExtension;
 use Framework\Twig\FormExtension;
 use Framework\Twig\TextExtension;
 use Framework\Twig\TimeExtension;
 use Framework\Twig\FlashExtension;
 use Framework\Session\SessionInterface;
 use Framework\Twig\PagerfantaExtension;
+use Framework\Middleware\CsrfMiddleware;
 use Framework\Renderer\RendererInterface;
 use Framework\Router\RouterTwigExtension;
 use Framework\Renderer\TwigRendererFactory;
@@ -28,9 +30,11 @@ return [
         \DI\get(TextExtension::class),
         \DI\get(TimeExtension::class),
         \DI\get(FlashExtension::class),
-        \DI\get(FormExtension::class)
+        \DI\get(FormExtension::class),
+        \DI\get(CsrfExtension::class)
     ],
     SessionInterface::class => \DI\create(PHPSession::class),
+    CsrfMiddleware::class => \DI\create()->constructor(\di\get(SessionInterface::class)),
     Router::class => \DI\create(),
     RendererInterface::class => \DI\factory(TwigRendererFactory::class),
     \PDO::class => function (\Psr\Container\ContainerInterface $c) {

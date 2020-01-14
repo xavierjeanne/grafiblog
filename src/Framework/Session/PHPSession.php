@@ -2,7 +2,7 @@
 
 namespace Framework\Session;
 
-class PHPSession implements SessionInterface
+class PHPSession implements SessionInterface, \ArrayAccess
 {
     /**
      * ensure that session is start
@@ -54,5 +54,24 @@ class PHPSession implements SessionInterface
     {
         $this->ensureStarted();
         unset($_SESSION[$key]);
+    }
+    public function offsetExists($offset)
+    {
+        $this->ensureStarted();
+        return array_key_exists($offset, $_SESSION);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        return $this->set($offset, $value);
+    }
+    public function offsetUnset($offset)
+    {
+        $this->delete($offset);
     }
 }
