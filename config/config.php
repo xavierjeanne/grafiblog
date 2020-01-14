@@ -10,6 +10,7 @@ use Framework\Twig\FormExtension;
 use Framework\Twig\TextExtension;
 use Framework\Twig\TimeExtension;
 use Framework\Twig\FlashExtension;
+use Framework\Router\RouterFactory;
 use Framework\Session\SessionInterface;
 use Framework\Twig\PagerfantaExtension;
 use Framework\Middleware\CsrfMiddleware;
@@ -19,6 +20,7 @@ use Framework\Renderer\TwigRendererFactory;
 
 
 return [
+    'env' => \DI\env('ENV', 'dev'),
     'database.host' => 'localhost',
     'database.username' => 'root',
     'database.password' => '',
@@ -35,7 +37,7 @@ return [
     ],
     SessionInterface::class => \DI\create(PHPSession::class),
     CsrfMiddleware::class => \DI\create()->constructor(\di\get(SessionInterface::class)),
-    Router::class => \DI\create(),
+    Router::class => \DI\Factory(RouterFactory::class),
     RendererInterface::class => \DI\factory(TwigRendererFactory::class),
     \PDO::class => function (\Psr\Container\ContainerInterface $c) {
         return new PDO(
