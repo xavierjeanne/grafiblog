@@ -6,9 +6,10 @@ use PDO;
 use Framework\Router;
 use App\Blog\Entity\Post;
 use App\Framework\Validator;
+use Framework\Database\Table;
+use Framework\Database\Hydrator;
 use Framework\Session\FlashService;
 use Framework\Actions\RouterAwareAction;
-use Framework\Database\Table;
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -58,7 +59,7 @@ class CrudAction
     public function index(Request $request): string
     {
         $params = $request->getQueryParams();
-        $items = $this->table->findPaginated(12, $params['p'] ?? 1);
+        $items = $this->table->findAll()->paginate(12, $params['p'] ?? 1);
         return $this->renderer->render($this->viewPath . '/index', compact('items'));
     }
     /**
@@ -78,9 +79,7 @@ class CrudAction
                 return $this->redirect($this->routePrefix . '.index');
             }
             $errors = $validator->getErrors();
-            $params = $request->getParsedBody();
-            $params['id'] = $item->id;
-            $item = $params;
+            Hydrator::hydrate($request->getParsedBody(), $item);
         }
         return $this->renderer->render($this->viewPath . '/edit', $this->formParams(compact('item', 'errors')));
     }
@@ -100,8 +99,8 @@ class CrudAction
                 $this->flash->success($this->messages['create']);
                 return $this->redirect($this->routePrefix . '.index');
             }
+            Hydrator::hydrate($request->getParsedBody(), $item);
             $errors = $validator->getErrors();
-            $item = $request->getParsedBody();
         }
         return $this->renderer->render($this->viewPath . '/create', $this->formParams(compact('item', 'errors')));
     }

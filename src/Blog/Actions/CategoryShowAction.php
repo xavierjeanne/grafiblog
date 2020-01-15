@@ -28,7 +28,7 @@ class CategoryShowAction
         $params = $request->getQueryParams();
         $category = $this->categoryTable->findBy('slug', $request->getAttribute('slug'));
         $params = $request->getQueryParams();
-        $posts = $this->postTable->findPaginatedPublicForCategory(12, $params['p'] ?? 1, $category->id);
+        $posts = $this->postTable->findPublicForCategory($category->id)->paginate(12, $params['p'] ?? 1);
         $categories = $this->categoryTable->findAll();
         $page = $params['p'] ?? 1;
         return $this->renderer->render('@blog/index', compact('posts', 'categories', 'category', 'page'));

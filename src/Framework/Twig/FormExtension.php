@@ -47,6 +47,8 @@ class FormExtension extends AbstractExtension
             $input = $this->textarea($value, $attributes);
         } elseif ($type === 'file') {
             $input = $this->file($attributes);
+        } elseif ($type === 'checkbox') {
+            $input = $this->checkbox($value, $attributes);
         } elseif (array_key_exists('options', $options)) {
             $input = $this->select($value, $options['options'], $attributes);
         } else {
@@ -80,6 +82,15 @@ class FormExtension extends AbstractExtension
     private function input(?string $value, array $attributes): string
     {
         return "<input type=\"text\" " . $this->getHmtlFromArray($attributes) . " value=\"{$value}\"/>";
+    }
+    private function checkbox(?string $value, array $attributes): string
+    {
+
+        $html = '<input type="hidden" name="' . $attributes['name'] . '" value="0"/>';
+        if ($value) {
+            $attributes['checked'] = true;
+        }
+        return $html . "<input type=\"checkbox\" " . $this->getHmtlFromArray($attributes) . " value=\"1\"/>";
     }
 
     /**
