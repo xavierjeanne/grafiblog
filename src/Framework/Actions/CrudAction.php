@@ -113,7 +113,7 @@ class CrudAction
      */
     public function delete(Request $request)
     {
-        $item = $this->table->delete($request->getAttribute('id'));
+        $this->table->delete($request->getAttribute('id'));
         return $this->redirect($this->routePrefix . '.index');
     }
     /**
