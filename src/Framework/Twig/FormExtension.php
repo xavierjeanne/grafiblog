@@ -45,6 +45,8 @@ class FormExtension extends AbstractExtension
         }
         if ($type === 'textarea') {
             $input = $this->textarea($value, $attributes);
+        } elseif ($type === 'file') {
+            $input = $this->file($attributes);
         } elseif (array_key_exists('options', $options)) {
             $input = $this->select($value, $options['options'], $attributes);
         } else {
@@ -119,5 +121,9 @@ class FormExtension extends AbstractExtension
             return $value->format('Y-m-d H:i:s');
         }
         return (string) $value;
+    }
+    private function file($attributes)
+    {
+        return "<input type=\"file\" " . $this->getHmtlFromArray($attributes) . " />";
     }
 }

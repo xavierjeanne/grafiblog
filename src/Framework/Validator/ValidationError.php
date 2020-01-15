@@ -16,7 +16,9 @@ class ValidationError
         'datetime' => 'Le champ %s doit être une date valide(%s)',
         'empty' => 'Le champ %s n\'est pas un slug valide',
         'exists' => 'Le champ %s n\'existe pas dans la table %s',
-        'unique' => 'Le champ %s doit être unique'
+        'unique' => 'Le champ %s doit être unique',
+        'filetype' => 'Le champ %s n\'est pas au format valide (%s)',
+        'uploaded' => 'Vous devez uploader un fichier'
     ];
 
     public function __construct(string $key, string $rule, array $attributes = [])

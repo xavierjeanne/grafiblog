@@ -12,7 +12,10 @@ class Validator
      * @var array
      */
     private $params;
-
+    private const MIME_TYPES = [
+        'jpg' => 'image/jpeg',
+        'png' => 'image/png',
+    ];
     /**
      *
      * @var string[]
@@ -152,6 +155,15 @@ class Validator
         }
         return $this;
     }
+
+    public function uploaded(string $key): self
+    {
+        $file = $this->getValue($key);
+        if ($file === null || $file->getError() !== UPLOAD_ERR_OK) {
+            $this->addError($key, 'uploaded');
+        }
+        return $this;
+    }
     public function unique(string $key, string $table, \PDO $pdo, int $exclude = null): self
     {
         $value = $this->getValue($key);
@@ -165,6 +177,21 @@ class Validator
         $statement->execute($params);
         if ($statement->fetchColumn() !== false) {
             $this->addError($key, 'unique', [$value]);
+        }
+        return $this;
+    }
+
+    public function extension(string $key, array $extensions): self
+    {
+
+        $file = $this->getValue($key);
+        if ($file !== null && $file->getError() === UPLOAD_ERR_OK) {
+            $type = $file->getClientMediatype();
+            $extension = mb_strtolower(pathinfo($file->getClientFileName(), PATHINFO_EXTENSION));
+            $expectedType = self::MIME_TYPES[$extension] ?? null;
+            if (!in_array($extension, $extensions) || $expectedType !== $type) {
+                $this->addError($key, 'filetype', [join(',', $extensions)]);
+            }
         }
         return $this;
     }
