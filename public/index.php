@@ -1,13 +1,15 @@
 <?php
 
 use Middlewares\Whoops;
+use App\Auth\AuthModule;
 use App\Blog\BlogModule;
 use App\Admin\AdminModule;
-use GuzzleHttp\Psr7\Response;
+use App\Auth\ForbiddenMiddleware;
 use GuzzleHttp\Psr7\ServerRequest;
+use Framework\Auth\LoggedInMiddleware;
+use Framework\Middleware\CsrfMiddleware;
 use Framework\Middleware\MethodMiddleware;
 use Framework\Middleware\RouterMiddleware;
-use Framework\Middleware\CsrfMiddleware;
 use Framework\Middleware\NotFoundMiddleware;
 use Framework\Middleware\DispatcherMiddleware;
 use Framework\Middleware\TrailingSlashMiddleware;
@@ -16,15 +18,16 @@ chdir(dirname(__DIR__));
 // require autoload composer
 require 'vendor/autoload.php';
 
-$modules = [
-    AdminModule::class,
-    BlogModule::class
-];
+
 $app = (new \Framework\App('config/config.php'))
     ->addModule(AdminModule::class)
     ->addModule(BlogModule::class)
-    ->pipe(Whoops::class)
+    ->addModule(AuthModule::class);
+$container = $app->getContainer();
+$app->pipe(Whoops::class)
     ->pipe(TrailingSlashMiddleware::class)
+    ->pipe(ForbiddenMiddleware::class)
+    ->pipe($container->get('admin.prefix'), LoggedInMiddleware::class)
     ->pipe(MethodMiddleware::class)
     ->pipe(CsrfMiddleware::class)
     ->pipe(RouterMiddleware::class)
